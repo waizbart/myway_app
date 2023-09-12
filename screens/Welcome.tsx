@@ -5,11 +5,14 @@ import React from 'react';
 
 const Welcome = ({ navigation }: any) => {
     return (
-        <Box w={'100%'}>
-            <Box h={'70%'}>
+        <Box 
+            w={'100%'}
+            bg={colors.black}
+        >
+            <Box h={'60%'}>
                 <Carousel />
             </Box>
-            <Box h={'30%'}>
+            <Box h={'40%'}>
                 <VStack space={4} alignItems='center' justifyContent={'center'} h={'100%'}>
                     <Button
                         onPress={() => navigation.navigate('Login')}
