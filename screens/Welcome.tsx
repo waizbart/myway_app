@@ -30,7 +30,7 @@ const Welcome = ({ navigation }: any) => {
                         ENTRAR
                     </Button>
                     <Button
-                        onPress={() => navigation.navigate('FirstAccess')}
+                        onPress={() => navigation.navigate('SignUp')}
                         w={'80%'}
                         bg={colors.black}
                         borderRadius={10}
