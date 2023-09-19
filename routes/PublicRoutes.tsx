@@ -12,10 +12,10 @@ const Stack = createStackNavigator();
 export default function PublicRoutes() {
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#0000" }}>
       <Stack.Navigator initialRouteName="Welcome" screenOptions={{
         cardStyle: {
-          backgroundColor: '#FFFFFF'
+          backgroundColor: '#0000'
         },
       }}>
         <Stack.Screen

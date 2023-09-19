@@ -12,6 +12,7 @@ export default function Routes() {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={{
                 flex: 1,
+                backgroundColor: '#0000'
             }}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 {<PublicRoutes />}
