@@ -28,12 +28,14 @@ const Login = ({ navigation }: any) => {
               fontWeight: "500",
               color: colors.green
             }} alignSelf="flex-end" mt="1">
-              Forget Password?
+              Esqueci minha senha
             </Link>
           </FormControl>
           <Button mt="2" bg={colors.green} _text={{
             color: "black"
-          }}>
+          }}
+            onPress={() => navigation.navigate('Route')}
+          >
             ENTRAR
           </Button>
           <HStack mt="6" justifyContent="center">
