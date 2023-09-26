@@ -1,50 +1,87 @@
-import React from 'react';
-import MapView from 'react-native-maps';
-import { StyleSheet, View } from 'react-native';
-import LocationAutocomplete from '../components/LocationAutocomplete';
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
+import LocationAutocomplete from "../components/LocationAutocomplete";
+import MapView from "../components/MapComponent";
+import { Button } from "native-base";
+import { colors } from "../styles/colors";
+
+interface Coordinate {
+  latitude: number;
+  longitude: number;
+}
 
 export default function Route() {
-    return (
-        <View style={styles.container}>
-            <View style={styles.inputs}>
-                <View style={styles.input} >
-                    <LocationAutocomplete placeholder='Origem' />
-                </View>
-                <View style={styles.input} >
-                    <LocationAutocomplete placeholder='Destino' />
-                </View>
-            </View>
-            <MapView
-                style={styles.map}
-                userInterfaceStyle={'dark'}
-                showsUserLocation
-                showsMyLocationButton
-            />
+  const [startPoint, setStartPoint] = useState<Coordinate>();
+  const [endPoint, setEndPoint] = useState<Coordinate>();
+  const [routeCoordinates, setRouteCoordinates] = useState<Coordinate[]>();
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.inputs}>
+        <View style={styles.input}>
+          <LocationAutocomplete placeholder="Origem" setPoint={setStartPoint} />
         </View>
-    );
+        <View style={styles.input}>
+          <LocationAutocomplete placeholder="Destino" setPoint={setEndPoint} />
+        </View>
+      </View>
+
+      <MapView
+        startPoint={startPoint}
+        endPoint={endPoint}
+        setRouteCoordinates={setRouteCoordinates}
+      />
+
+      {routeCoordinates && (
+        <View
+          style={{
+            position: "absolute",
+            bottom: 10,
+            width: "60%",
+            padding: 16,
+            alignSelf: "center",
+          }}
+        >
+          <Button
+            onPress={() => {
+              console.log(routeCoordinates);
+            }}
+            w={"80%"}
+            bg={colors.black}
+            borderRadius={10}
+            borderColor={colors.green}
+            borderWidth={1}
+            _text={{
+              color: colors.green,
+              fontSize: 16,
+              fontFamily: "Poppins_500Medium",
+            }}
+            _pressed={{ bg: colors.darkGreen }}
+            fontFamily="Poppins_500Medium"
+          >
+            SALVAR ROTA
+          </Button>
+        </View>
+      )}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#000',
-        alignItems: 'flex-end',
-        justifyContent: 'flex-end',
-    },
-    map: {
-        width: '100%',
-        height: '80%'
-    },
-    inputs: {
-        backgroundColor: '#000',
-        position: 'absolute',
-        height: '20%',
-        zIndex: 1,
-        width: '100%',
-        padding: 16,
-        top: 0
-    },
-    input: {
-        marginBottom: 56
-    }
+  container: {
+    flex: 1,
+  },
+  map: {
+    width: "100%",
+    height: "80%",
+  },
+  inputs: {
+    backgroundColor: "#000",
+    zIndex: 1,
+    width: "100%",
+    padding: 16,
+  },
+  input: {
+    marginBottom: 56,
+  },
 });

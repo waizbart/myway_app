@@ -3,16 +3,21 @@ import { View, StyleSheet } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 const LocationAutocomplete = ({
-    placeholder 
+    placeholder,
+    setPoint,
 }: {
     placeholder: string;
+    setPoint: any;
 }) => {
   return (
     <View style={styles.container}>
       <GooglePlacesAutocomplete
         placeholder={placeholder}
         onPress={(data, details = null) => {
-          console.log(data, details);
+          setPoint({
+            latitude: details?.geometry.location.lat,
+            longitude: details?.geometry.location.lng,
+          });
         }}
         query={{
           key: 'AIzaSyB48pzmebzqdVs2iZ42RovuI6224UOLWMA',
@@ -23,6 +28,7 @@ const LocationAutocomplete = ({
           textInput: styles.textInput,
           listView: styles.listView,
         }}
+        fetchDetails
       />
     </View>
   );
