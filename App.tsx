@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Box, NativeBaseProvider, Spinner, extendTheme } from "native-base";
+import { Box, NativeBaseProvider, extendTheme } from "native-base";
 import Routes from "./routes";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";

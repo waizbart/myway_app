@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import LocationAutocomplete from "../components/LocationAutocomplete";
-import MapView from "../components/MapComponent";
-import { Button } from "native-base";
-import { colors } from "../styles/colors";
+import LocationAutocomplete from "../../components/LocationAutocomplete";
+import MapView from "../../components/MapComponent";
+import { Button, IconButton } from "native-base";
+import { colors } from "../../styles/colors";
+import { AntDesign } from '@expo/vector-icons';
 
 interface Coordinate {
   latitude: number;
   longitude: number;
 }
 
-export default function Route() {
+export default function CreateRoute({ navigation }: any) {
   const [startPoint, setStartPoint] = useState<Coordinate>();
   const [endPoint, setEndPoint] = useState<Coordinate>();
   const [routeCoordinates, setRouteCoordinates] = useState<Coordinate[]>();
@@ -18,6 +19,15 @@ export default function Route() {
   return (
     <View style={styles.container}>
       <View style={styles.inputs}>
+        <IconButton
+          icon={<AntDesign name="arrowleft" size={30} color={colors.white} />}
+          variant="unstyled"
+          onPress={() => {
+            navigation.goBack()
+          }}
+          alignSelf={'flex-start'}
+          mb={4}
+        />
         <View style={styles.input}>
           <LocationAutocomplete placeholder="Origem" setPoint={setStartPoint} />
         </View>

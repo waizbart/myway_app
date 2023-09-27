@@ -1,9 +1,11 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { colors } from "../styles/colors";
-import Route from "../screens/Route";
-
+import { FontAwesome5 } from '@expo/vector-icons'; 
 const Tab = createBottomTabNavigator();
+
+import Route from "../screens/Route";
+import CreateRoute from "../screens/Route/CreateRoute";
 
 export default function PrivateRoutes({ navigation }: any) {
 
@@ -30,12 +32,26 @@ export default function PrivateRoutes({ navigation }: any) {
       }}
     >
       <Tab.Screen
-        name="Parceiros"
+        name="Rotas"
         component={Route}
         options={{
           tabBarLabel: "Rotas",
-          headerShown: false
-        }}
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="route" size={size} color={color} />
+          ),
+        }} 
+      />
+      <Tab.Screen
+        name="CreateRoute"
+        component={CreateRoute}
+        options={{
+          tabBarLabel: "Criar rota",
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="route" size={size} color={color} />
+          ),
+        }} 
       />
     </Tab.Navigator>
   );

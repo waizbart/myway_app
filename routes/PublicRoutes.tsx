@@ -6,7 +6,7 @@ import Welcome from "../screens/Welcome";
 import Login from "../screens/Login";
 import SignUp from "../screens/SignUp";
 
-import Route from "../screens/Route";
+import Route from "../screens/Route/CreateRoute";
 
 const Stack = createStackNavigator();
 

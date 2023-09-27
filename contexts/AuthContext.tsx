@@ -51,19 +51,22 @@ function AuthProvider({ children }: { children: ReactNode }) {
         try {
             setIsLoading(true);
 
-            const { token } = await api.post('/auth/login', {
+            const response = await api.post('/auth/login', {
                 login,
                 password
             });
 
-            console.log({token})
+            const token = response.data.token;
 
             await AsyncStorage.setItem('user-token', token)
+
+            api.defaults.headers.Authorization = `Bearer ${token}`;
 
             setUser(token);
             navigate('Route')
             setIsLoading(false);
         } catch (e: any) {
+            console.log(e)
             setIsLoading(false);
             throw new Error(e);
         };
