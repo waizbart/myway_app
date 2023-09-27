@@ -1,11 +1,11 @@
 import React from "react";
 import { KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from "react-native";
 import PublicRoutes from "./PublicRoutes";
-//import PrivateRoutes from "./PrivateRoutes";
-//import { useAuth } from "../hooks/useAuth";
+import PrivateRoutes from "./PrivateRoutes";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Routes() {
-    //const { signed } = useAuth()
+    const { signed } = useAuth()
 
     return (
         <KeyboardAvoidingView
@@ -15,7 +15,11 @@ export default function Routes() {
                 backgroundColor: '#0000'
             }}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                {<PublicRoutes />}
+                {
+                    signed ?
+                        <PrivateRoutes /> :
+                        <PublicRoutes />
+                }
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView >
     )

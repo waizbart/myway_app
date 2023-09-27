@@ -1,40 +1,77 @@
-import React from "react";
-import { Center, Box, Heading, VStack, FormControl, Input, Link, Button, HStack, Text } from "native-base";
+import React, { useEffect } from "react";
+import { Center, Box, Heading, VStack, FormControl, Input, Link, Button, HStack, Text, useToast } from "native-base";
 import { colors } from "../styles/colors";
+import { useForm } from "react-hook-form";
+import { useAuth } from "../hooks/useAuth";
 
 const Login = ({ navigation }: any) => {
+  const { register, setValue, handleSubmit } = useForm()
+  const { handleLogin, isLoading } = useAuth()
+
+  const toast = useToast()
+
+  useEffect(() => {
+    register('login')
+    register('password')
+  }, [register])
+
+  const onSubmit = async (data: any) => {
+    try {
+      await handleLogin(data.login, data.password)
+    } catch (error) {
+      toast.show({
+        render: () => (
+          <Box bg={colors.redAlert} px={4} py={3} rounded="md" mb={5}>
+            <Text color={colors.white} fontFamily={'Poppins_500Medium'}>
+              Usuário ou senha incorretos.
+            </Text>
+          </Box>
+        )
+      })
+    }
+  }
+
   return (
     <Center w="100%" h="100%" bg={"black"}>
       <Box safeArea p="2" py="8" w="90%">
         <Heading size="lg" fontWeight="600" color="white">
           Login
         </Heading>
-        <Heading mt="1" _dark={{
-          color: "warmGray.200"
-        }} color="coolGray.400" fontWeight="medium" size="xs">
+        <Heading mt="1" color="coolGray.400" fontWeight="medium" size="xs">
           Faça login para continuar!
         </Heading>
 
         <VStack space={3} mt="5">
           <FormControl>
             <FormControl.Label>Usuário</FormControl.Label>
-            <Input />
+            <Input
+              onChangeText={(text) => {
+                setValue('login', text)
+              }}
+              _input={{
+                placeholderTextColor: colors.grey,
+                color: "white"
+              }}
+            />
           </FormControl>
           <FormControl>
             <FormControl.Label>Senha</FormControl.Label>
-            <Input type="password" />
-            <Link _text={{
-              fontSize: "xs",
-              fontWeight: "500",
-              color: colors.green
-            }} alignSelf="flex-end" mt="1">
-              Esqueci minha senha
-            </Link>
+            <Input
+              type="password"
+              onChangeText={(text) => {
+                setValue('password', text)
+              }}
+              _input={{
+                placeholderTextColor: colors.grey,
+                color: "white"
+              }}
+            />
           </FormControl>
           <Button mt="2" bg={colors.green} _text={{
             color: "black"
           }}
-            onPress={() => navigation.navigate('Route')}
+            onPress={handleSubmit(onSubmit)}
+            isLoading={isLoading}
           >
             ENTRAR
           </Button>

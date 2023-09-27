@@ -14,7 +14,7 @@ export default function PublicRoutes() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#0000" }}>
-      <Stack.Navigator initialRouteName="Route" screenOptions={{
+      <Stack.Navigator initialRouteName="Welcome" screenOptions={{
         cardStyle: {
           backgroundColor: '#0000'
         },

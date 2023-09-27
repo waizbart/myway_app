@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { NativeBaseProvider, extendTheme } from "native-base";
+import { Box, NativeBaseProvider, Spinner, extendTheme } from "native-base";
 import Routes from "./routes";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -16,7 +16,7 @@ import {
 import * as SplashScreen from "expo-splash-screen";
 import * as SystemUI from 'expo-system-ui';
 import { colors } from "./styles/colors";
-//import AuthProvider from "./contexts/AuthContext";
+import AuthProvider from "./contexts/AuthContext";
 
 SystemUI.setBackgroundColorAsync("black");
 SplashScreen.preventAutoHideAsync();
@@ -27,6 +27,7 @@ const theme = extendTheme({
 
 
 export default function App() {
+
   let [fontsLoaded] = useFonts({
     Poppins_300Light,
     Poppins_400Regular,
@@ -47,7 +48,6 @@ export default function App() {
     return null;
   }
 
-
   return (
     <NativeBaseProvider theme={theme}>
       <SafeAreaView
@@ -58,9 +58,9 @@ export default function App() {
         onLayout={onLayoutRootView}
       >
         <NavigationContainer>
-          {/* <AuthProvider> */}
+          <AuthProvider>
             <Routes />
-          {/* </AuthProvider> */}
+          </AuthProvider>
         </NavigationContainer>
       </SafeAreaView>
     </NativeBaseProvider>
