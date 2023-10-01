@@ -60,13 +60,11 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
             await AsyncStorage.setItem('user-token', token)
 
-            api.defaults.headers.Authorization = `Bearer ${token}`;
-
             setUser(token);
             navigate('Route')
             setIsLoading(false);
         } catch (e: any) {
-            console.log(e)
+            console.log(e.response.config)
             setIsLoading(false);
             throw new Error(e);
         };

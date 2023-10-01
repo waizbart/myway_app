@@ -1,21 +1,52 @@
 import React, { useState, useEffect } from 'react'
-import { Flex, IconButton, ScrollView, Text, VStack } from 'native-base'
+import { Flex, IconButton, ScrollView, Text, VStack, Spinner } from 'native-base'
 import { getRoutes } from '../../services'
 import { colors } from '../../styles/colors'
 import { Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Route({ navigation }: any) {
     const [routes, setRoutes] = useState<any>([])
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    useEffect(() => {
-        async function loadRoutes() {
+    async function loadRoutes() {
+        try {
+            setIsLoading(true)
             const rotas = await getRoutes()
             console.log({ rotas })
             setRoutes(rotas)
+            setIsLoading(false)
+        } catch (error) {
+            console.log({ error })
+            setIsLoading(false)
         }
-        loadRoutes()
-    }, [])
+    }
+
+    useFocusEffect(
+        React.useCallback(() => {
+
+            loadRoutes()
+
+            return () => {
+                setRoutes([])
+            };
+        }, [])
+    );
+
+    if (isLoading) return (
+        <Flex
+            flex={1}
+            justify='center'
+            align='center'
+            bg={'black'}
+        >
+            <Spinner
+                color={colors.green}
+                size='lg'
+            />
+        </Flex>
+    )
 
     return (
         <>
@@ -32,11 +63,25 @@ export default function Route({ navigation }: any) {
                 >
                     Minhas rotas
                 </Text>
+                {
+                    routes.length === 0 && (
+                        <Text
+                            color={colors.grey}
+                            fontFamily={'Poppins_400Regular'}
+                            fontSize={16}
+                            alignSelf={'center'}
+                            mt={10}
+                        >
+                            Você ainda não possui rotas cadastradas.
+                        </Text>
+                    )
+                }
                 <ScrollView
                     mt={6}
+                    showsVerticalScrollIndicator={false}
                 >
-                    <VStack space={6}>
-                        {routes.map((route: any) => (
+                    <VStack space={6} mb={20}>
+                        {routes?.map((route: any) => (
                             <Flex
                                 borderColor={colors.white}
                                 borderWidth={1}
@@ -55,11 +100,14 @@ export default function Route({ navigation }: any) {
                                     {route.name}
                                 </Text>
                                 <IconButton
-                                    icon={<Entypo name="map" size={30} color={colors.green} />}
+                                    icon={<Entypo
+                                        name="map"
+                                        size={30}
+                                        color={colors.green}
+                                    />}
                                     variant="unstyled"
-                                    onPress={() => { }}
-                                    _pressed={{
-
+                                    onPress={() => {
+                                        navigation.navigate('RouteDetails', { route })
                                     }}
                                 />
                             </Flex>
@@ -68,13 +116,19 @@ export default function Route({ navigation }: any) {
                 </ScrollView>
             </VStack>
             <IconButton
-                icon={<Ionicons name="add-circle-sharp" size={60} color={colors.green} />}
+                icon={<Ionicons
+                    name="add-circle-sharp"
+                    size={60} color={colors.green}
+                />}
                 variant="unstyled"
                 onPress={() => { }}
                 position='absolute'
                 bottom={5}
                 right={5}
                 onPressIn={() => navigation.navigate('CreateRoute')}
+                backgroundColor={'black'}
+                borderRadius={200}
+                p={1}
             />
         </>
     )

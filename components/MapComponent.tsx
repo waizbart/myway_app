@@ -3,6 +3,7 @@ import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { colors } from "../styles/colors";
 import * as Location from "expo-location";
+import { useToast, Box, Text } from "native-base";
 
 interface Coordinate {
   latitude: number;
@@ -12,12 +13,13 @@ interface Coordinate {
 const MapComponent = ({
   startPoint,
   endPoint,
-  setRouteCoordinates,
+  setRouteCoordinates
 }: {
   startPoint?: Coordinate;
   endPoint?: Coordinate;
   setRouteCoordinates: any;
 }) => {
+  const toast = useToast();
 
   const [location, setLocation] = useState<Location.LocationObject>();
 
@@ -102,6 +104,17 @@ const MapComponent = ({
           strokeWidth={5}
           strokeColor={colors.green}
           onReady={onReady}
+          onError={(errorMessage) => {
+            toast.show({
+              render: () => (
+                <Box bg={colors.redAlert} px={4} py={3} rounded="md" mb={5}>
+                  <Text color={colors.white} fontFamily={'Poppins_500Medium'}>
+                    Nenhum resultado encontrado para a rota selecionada.
+                  </Text>
+                </Box>
+              )
+            })
+          }}
         />
       )}
     </MapView>

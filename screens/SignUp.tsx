@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from '../hooks/useAuth';
 
 const SingUp = () => {
-    const { register, setValue, handleSubmit, watch } = useForm()
+    const { register, setValue, handleSubmit } = useForm()
     const { handleSignUp, isLoading } = useAuth()
 
     const toast = useToast()
@@ -29,9 +29,9 @@ const SingUp = () => {
         register('hasCar', { value: true })
     }, [register])
 
-    const onSubmit = (data: any) => {
+    const onSubmit = async (data: any) => {
         try {
-            handleSignUp(data)
+            await handleSignUp(data)
 
             toast.show({
                 render: () => (
@@ -42,7 +42,7 @@ const SingUp = () => {
                     </Box>
                 )
             })
-        } catch (error) {
+        } catch (error: any) {
             toast.show({
                 render: () => (
                     <Box bg={colors.redAlert} px={4} py={3} rounded="md" mb={5}>
