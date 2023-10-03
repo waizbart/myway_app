@@ -1,15 +1,20 @@
 import React, { useState } from 'react'
-import { Flex, IconButton, ScrollView, Text, VStack, Spinner, Pressable } from 'native-base'
+import { Flex, IconButton, ScrollView, Text, VStack, Spinner, Pressable, Divider } from 'native-base'
 import { getMatches } from '../../services'
 import { colors } from '../../styles/colors'
 import { useFocusEffect } from '@react-navigation/native';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Entypo } from '@expo/vector-icons';
+import { Linking } from 'react-native';
 
 export default function RouteDetails({ navigation, route }: any) {
     const { id, name, coordinates } = route.params?.route
 
+    const startPoint = coordinates?.at(0)
+    const endPoint = coordinates?.at(-1)
+
     const [matches, setMatches] = useState<any>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [selectedMatch, setSelectedMatch] = useState<number>()
 
     async function loadMatches() {
         try {
@@ -95,53 +100,18 @@ export default function RouteDetails({ navigation, route }: any) {
                 showsVerticalScrollIndicator={false}
             >
                 <VStack space={6}>
-                    {matches?.map((match: any) => (
-                        <Pressable>
+                    {matches?.map((match: any, idx: number) => (
+                        <Pressable
+                            borderRadius={10}
+                            p={6}
+                            key={match.id}
+                            bg={colors.lightBlack}
+                        >
                             <Flex
-                                borderColor={colors.white}
-                                borderWidth={1}
-                                borderRadius={10}
-                                p={6}
                                 direction='row'
                                 justify='space-between'
                                 align='center'
-                                key={match.id}
                             >
-                                <VStack space={2}>
-                                    <Flex direction='row' align='center'>
-                                        <Text
-                                            color={colors.white}
-                                            fontFamily={'Poppins_500Medium'}
-                                            fontSize={16}
-                                        >
-                                            Usuário:{" "}
-                                        </Text>
-                                        <Text
-                                            color={colors.white}
-                                            fontFamily={'Poppins_400Regular'}
-                                            fontSize={16}
-                                        >
-                                            {match.user_login}
-                                        </Text>
-                                    </Flex>
-                                    <Flex direction='row' align='center'>
-                                        <Text
-                                            color={colors.white}
-                                            fontFamily={'Poppins_500Medium'}
-                                            fontSize={16}
-                                        >
-                                            Telefone:{" "}
-                                        </Text>
-                                        <Text
-                                            key={match.id}
-                                            color={colors.white}
-                                            fontFamily={'Poppins_400Regular'}
-                                            fontSize={16}
-                                        >
-                                            {match.user_phone}
-                                        </Text>
-                                    </Flex>
-                                </VStack>
                                 <Text
                                     color={colors.white}
                                     fontFamily={'Poppins_600SemiBold'}
@@ -154,7 +124,56 @@ export default function RouteDetails({ navigation, route }: any) {
                                         }).format(match.near_percentage / 100)
                                     }
                                 </Text>
+                                <IconButton
+                                    icon={<Entypo
+                                        name={selectedMatch == idx ? "chevron-up" : "chevron-down"}
+                                        size={30}
+                                        color={colors.green}
+                                    />}
+                                    variant="unstyled"
+                                    onPress={() => {
+                                        if (selectedMatch == idx)
+                                            setSelectedMatch(undefined)
+                                        else
+                                            setSelectedMatch(idx)
+                                    }}
+                                />
                             </Flex>
+                            {selectedMatch == idx && <Flex>
+                                <Divider mb={4} />
+                                <Text
+                                    color={colors.white}
+                                    fontFamily={'Poppins_500Medium'}
+                                    fontSize={16}
+                                >
+                                    Usuário: <Text color={colors.green}>{match.user_login}</Text>
+                                </Text>
+                                <Flex direction='row' justify='space-around' mt={8}>
+                                    <IconButton
+                                        icon={<Entypo
+                                            name={"phone"}
+                                            size={35}
+                                            color={colors.green}
+                                            style={{
+                                                transform: [{ rotate: '90deg' }]
+                                            }}
+                                        />}
+                                        variant="unstyled"
+                                        onPress={() => {
+                                            const mapsRoute = `https://www.google.com/maps/dir/${startPoint.latitude},${startPoint.longitude}/${endPoint.latitude},${endPoint.longitude}/`
+                                            Linking.openURL(`https://wa.me/${match.user_phone}?text=Olá, ${match.user_login}! Vi no MyWay que você compartilha uma de minhas rotas e gostaria de saber se posso te acompanhar.\n\n${mapsRoute}`)
+                                        }}
+                                    />
+                                    <IconButton
+                                        icon={<Entypo
+                                            name={"trash"}
+                                            size={35}
+                                            color={colors.redAlert}
+                                        />}
+                                        variant="unstyled"
+                                    />
+                                </Flex>
+                            </Flex>}
                         </Pressable>
                     ))}
                 </VStack>

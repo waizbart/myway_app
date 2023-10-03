@@ -63,8 +63,15 @@ export default function Route({ navigation }: any) {
                 >
                     Minhas rotas
                 </Text>
+                <Text
+                    color={colors.green}
+                    fontFamily={'Poppins_500Medium'}
+                    fontSize={14}
+                >
+                    Selecione uma rota para ver seus matches
+                </Text>
                 {
-                    routes.length === 0 && (
+                    routes?.length === 0 && (
                         <Text
                             color={colors.grey}
                             fontFamily={'Poppins_400Regular'}
@@ -83,8 +90,7 @@ export default function Route({ navigation }: any) {
                     <VStack space={6} mb={20}>
                         {routes?.map((route: any) => (
                             <Flex
-                                borderColor={colors.white}
-                                borderWidth={1}
+                                bg={colors.lightBlack}
                                 borderRadius={10}
                                 p={6}
                                 direction='row'
@@ -101,7 +107,7 @@ export default function Route({ navigation }: any) {
                                 </Text>
                                 <IconButton
                                     icon={<Entypo
-                                        name="map"
+                                        name="shuffle"
                                         size={30}
                                         color={colors.green}
                                     />}

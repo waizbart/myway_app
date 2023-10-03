@@ -7,7 +7,7 @@ const publicRoutes = [
 ];
 
 export const api = axios.create({
-    baseURL: "http://192.168.0.116:8080",
+    baseURL: "http://172.17.119.76:8080",
     headers: {
         "Content-Type": "application/json"
     }
