@@ -13,7 +13,7 @@ const LocationAutocomplete = ({
     <View style={styles.container}>
       <GooglePlacesAutocomplete
         placeholder={placeholder}
-        onPress={(data, details = null) => {
+        onPress={(_, details = null) => {
           setPoint({
             latitude: details?.geometry.location.lat,
             longitude: details?.geometry.location.lng,

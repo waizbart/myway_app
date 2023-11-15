@@ -43,6 +43,7 @@ const SingUp = () => {
                 )
             })
         } catch (error: any) {
+            console.log({ error })
             toast.show({
                 render: () => (
                     <Box bg={colors.redAlert} px={4} py={3} rounded="md" mb={5}>

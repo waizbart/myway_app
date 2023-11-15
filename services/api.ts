@@ -7,7 +7,7 @@ const publicRoutes = [
 ];
 
 export const api = axios.create({
-    baseURL: "http://172.17.119.76:8080",
+    baseURL: "https://myway-api-myway.azuremicroservices.io/",
     headers: {
         "Content-Type": "application/json"
     }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { colors } from "../styles/colors";
@@ -13,7 +13,7 @@ interface Coordinate {
 const MapComponent = ({
   startPoint,
   endPoint,
-  setRouteCoordinates
+  setRouteCoordinates,
 }: {
   startPoint?: Coordinate;
   endPoint?: Coordinate;
@@ -73,12 +73,12 @@ const MapComponent = ({
         longitudeDelta: 0.0421,
       };
     } else if (location) {
-        return {
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-        };
+      return {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      };
     }
   };
 
@@ -93,8 +93,10 @@ const MapComponent = ({
       showsMyLocationButton
       region={getRegion()}
     >
-      {startPoint && <Marker coordinate={startPoint} title="Início" />}
-      {endPoint && <Marker coordinate={endPoint} title="Fim" />}
+      {startPoint && (
+        <Marker coordinate={startPoint} title="Origem" />
+      )}
+      {endPoint && <Marker coordinate={endPoint} title="Destino" />}
 
       {startPoint && endPoint && (
         <MapViewDirections
@@ -108,12 +110,12 @@ const MapComponent = ({
             toast.show({
               render: () => (
                 <Box bg={colors.redAlert} px={4} py={3} rounded="md" mb={5}>
-                  <Text color={colors.white} fontFamily={'Poppins_500Medium'}>
+                  <Text color={colors.white} fontFamily={"Poppins_500Medium"}>
                     Nenhum resultado encontrado para a rota selecionada.
                   </Text>
                 </Box>
-              )
-            })
+              ),
+            });
           }}
         />
       )}
